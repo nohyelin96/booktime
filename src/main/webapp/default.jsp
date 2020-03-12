@@ -8,6 +8,7 @@
 </head>
 <body>
 	<jsp:forward page="/index.do"/>
-	<!-- http://localhost:9090/booktime/index.do -->
+	<!-- http://localhost:9090/booktime/index.do 
+		메인페이지로 이동-->
 </body>
 </html>
