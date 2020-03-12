@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="config.mybatis.mapper.oracle.user">
+	<insert id="insertUser" parameterType="userVo">
+		insert into "USER"(userid, pwd, name, birth, gender, grade, email1,email2, 
+		emailagree, zipcode, parseladdress, newaddress,addressdetail,phone)
+		values(#{userid},#{pwd},#{name},#{birth},#{gender},#{grade},
+		#{email1},#{email2},#{emailagree},#{zipcode},#{parseladdress},#{newaddress},
+		#{addressdetail},#{phone})
+	</insert>
+
+	<select id="chkUserid" parameterType="string" resultType="int">
+		select count(*) from "USER" where userid=#{userid} and withdrawaldate is null
+	</select>
+	
+	<select id="userGetPwd" parameterType="string" resultType="string">
+		select pwd from "USER"
+		where userid=#{userid} and withdrawaldate is null
+	</select>
+	
+	<select id="selectByUserid" parameterType="string" resultType="userVo">
+		select * from "USER" where userid=#{userid} and withdrawaldate is null
+	</select>
+	
+	<update id="deleteUser" parameterType="userVo">
+		update "USER"
+		set withdrawaldate = sysdate , withdrawalreason=#{withdrawalreason}
+		where userid=#{userid} and withdrawaldate is null
+	</update>
+	
+	<select id="selectPWD" parameterType="string" resultType="string">
+		select pwd from "USER" where userid=#{userid} and withdrawaldate is null
+	</select>
+	
+	<update id="updateMileage" parameterType="mileageVo">
+		update "USER"
+		set mileage = mileage
+		<if test="savingPoint>0">+#{savingPoint}</if>
+		<if test="usePoint>0">-#{usePoint}</if>
+		where userid=#{userid}
+	</update>
+	
+	<select id="selectByEmail" parameterType="userVo" resultType="String">
+		select userid from "USER" where email1=#{email1} and email2=#{email2} and userid=#{userid}
+	</select>
+	
+	<update id="resetPwd" parameterType="userVo">
+		update "USER"
+		set pwd = #{pwd}
+		where userid=#{userid}
+	</update>
+
+	<select id="selectAllUser" resultType="userVo">
+		select * from "USER" order by grade 
+	</select>
+	
+	<update id="updateUser" parameterType="userVo">
+		update "USER"
+		set phone=#{phone}, email1=#{email1}, email2=#{email2}, 
+		zipcode=#{zipcode}, parseladdress=#{parseladdress}, 
+		newaddress=#{newaddress}, addressdetail=#{addressdetail}
+		<if test="mileage!=0">, mileage=mileage+#{mileage}</if>
+		where pwd=#{pwd} and userid=#{userid}
+	</update>
+	
+	<update id="updatePwd" parameterType="userVo">
+		update "USER" set pwd=#{pwd} where userid=#{userid}
+	</update>
+	
+	<update id="updateUser2" parameterType="userVo">
+		update "USER"
+		set phone=#{phone}, email1=#{email1}, email2=#{email2}, 
+		zipcode=#{zipcode}, parseladdress=#{parseladdress}, 
+		newaddress=#{newaddress}, addressdetail=#{addressdetail}
+		where userid=#{userid}
+	</update>
+
+	<select id="searchMember" parameterType="userVo" resultType="int">
+		select count(*) from "USER" 
+		where userid=#{userid} and name=#{name} and email1=#{email1} 
+		and email2=#{email2} and withdrawaldate is null
+	</select>
+	
+	<select id="selectUserid" parameterType="userVo" resultType="String">
+		select userid from "USER" where name=#{name} and email1=#{email1} 
+		and email2=#{email2} and withdrawaldate is null
+	</select>
+
+	<select id="selectEmails" resultType="map">
+		select distinct email1||'@'||email2 as "email" from "USER"
+		where grade!='A' and emailAgree='Y'
+	</select>
+	
+	<update id="returnMember" parameterType="String">
+		update "USER"
+		set WITHDRAWALDATE = null, WITHDRAWALREASON = null
+		where userid=#{userid}
+	</update>
+</mapper>
+
+
+
+
+
+
+
+
+

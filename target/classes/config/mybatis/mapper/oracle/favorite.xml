@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatis.mapper.favorite">
+	<insert id="insertFavorite" parameterType="favoriteVo">
+		<selectKey keyProperty="favoriteNo" 
+			resultType="int" order="BEFORE">
+			select favorite_seq.nextval from dual
+		</selectKey>
+		
+		insert into favorite
+		values(#{favoriteNo}, #{userid}, #{group}, #{isbn}
+			,#{bookName}, #{writer}, #{publisher}, #{price}
+			,#{qty}
+			, default)
+	</insert>
+	
+	<sql id="whereMyFavorite">
+		where userid=#{userid} and isbn=#{isbn} and "group"=#{group}
+	</sql>
+	
+	<select id="selectFavoriteCount" parameterType="favoriteVo" resultType="int">
+		select count(*)
+		from favorite
+		<include refid="whereMyFavorite"></include>
+	</select>
+	
+	<update id="updateCart" parameterType="favoriteVo">
+		update favorite
+		set qty= qty+#{qty}
+		<include refid="whereMyFavorite"></include>
+	</update>
+	
+	<update id="updateQty" parameterType="favoriteVo">
+		update favorite
+		set qty = #{qty}
+		where favoriteNo = #{favoriteNo}
+	</update>
+	
+	<sql id="delCartOverDateSql">
+		delete favorite
+		<![CDATA[ where regdate+#{day} <= sysdate ]]>
+	</sql>
+	
+	<delete id="deleteCartOverDate" parameterType="int">
+		<include refid="delCartOverDateSql"></include> and "group"='CART'
+	</delete>
+	
+	<delete id="deleteCartOverDateByNonUser" parameterType="int">
+		<include refid="delCartOverDateSql"></include>
+		and userid like '#%'
+	</delete>
+	
+	<select id="selectFavorite" parameterType="favoriteVo" resultType="favoriteVo">
+		select * from favorite
+		where userid=#{userid} and "group"=#{group}
+		order by favoriteNo desc
+	</select>
+	
+	<select id="selectOneFavorite" parameterType="int" resultType="favoriteVo">
+		select * from favorite
+		where favoriteNo = #{favoriteNo}
+	</select>
+	
+	<delete id="deleteFavorite" parameterType="favoriteVo">
+		delete favorite
+		where "group"=#{group} and favoriteNo=#{favoriteNo}
+	</delete>
+	
+	<delete id="paymentOkDeleteCart" parameterType="map">
+		delete favorite
+		where userid=#{userid} and isbn=#{isbn} and "group"='CART'
+	</delete>
+</mapper>
+
+
+
+
+
+
+
+
+

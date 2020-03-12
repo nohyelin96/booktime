@@ -1,0 +1,127 @@
+@charset "UTF-8";
+
+#out{
+	border-top: 1px solid gray;
+	width: 800px;
+}
+#out p:nth-child(1){
+	font-size: 30px;
+	font-weight: bold;
+	margin-left: 20px;
+	margin-top: 20px;
+}
+#out hr{
+	width: 800px;
+	margin-top: 5px;
+}
+.all{
+	padding-left: 20px;
+}
+#cont p{
+	line-height: 7px;
+	font-size: 0.8em;
+	color: gray;
+}
+#cont label{
+	font-size: 20px;
+	margin-bottom: 20px;
+	font-weight: bold;
+}
+#cont span{
+	color: rgb(0 153 174);
+	font-size: 25px;
+}
+#info{
+	margin-top: 60px;
+}
+#info hr{
+	width: 780px;
+}
+#ultag li{
+	color: red;
+}
+#ultag p{
+	font-size: 0.8em;
+}
+#b{
+	color: red;
+}
+#chk{
+	text-align: center;
+	margin-bottom: 20px;
+	margin-top: 30px;
+}
+#chk p{
+	font-size: 0.8em;
+	width: 500px;
+	margin-left: 150px;
+	margin-top: 10px;
+	margin-bottom: 30px;
+}
+input[type=submit]{
+	margin-left: 10px;
+	color: white;
+	background: rgb(0 153 174);
+	border: 1px solid rgb(0 153 174);
+	width: 300px;
+	height: 50px;
+	border-radius: 4px;
+}
+input[type=button]{
+	color: rgb(0 153 174);
+	background: white;
+	border: 1px solid rgb(0 153 174);
+	width: 300px;
+	height: 50px;
+	border-radius: 4px;
+}
+#info label{
+	font-size: 1.2em;
+	font-weight: bold;
+	margin-top: 20px;
+}
+table{
+	border-top: 2px solid rgb(79, 79, 78);
+	width: 800px;
+	height: 300px;
+}
+#tbl tr th{
+	background: lightgray;
+	font-size: 0.8em;
+	width: 100px;
+	text-align: center;
+}
+input[type=radio]{
+	margin-left: 30px;
+	margin-top: 20px;
+}
+#tbl tr {
+	border-top: 1px solid gray;
+	border-bottom: 1px solid gray;
+}
+tr{
+	height: 150px;
+}
+textarea{
+	width: 690px;
+	height: 130px;
+}
+#tbl label{
+	font-size: 0.8em;
+}
+.tbl2 tr{
+	border-top: 1px solid gray;
+	border-bottom: 1px solid gray;
+}
+.tbl2 th{
+	background: lightgray;
+	text-align: center;
+}
+.tbl2 td{
+	padding-left: 30px;
+}
+.tbl2 #error{
+	color: red;
+	font-size: 0.8em;
+	margin-left: 5px;
+}

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatis.mapper.payment">
+	<insert id="insertPayment" parameterType="paymentVo">
+		insert into payment(payNo, userid, email1, email2
+			, nonMember, price, usePoint, instrument
+			, zipcode, parselAddress, newAddress, addressDetail
+			, progress, customerName, message, hp)
+		values(#{payNo}, #{userid}, #{email1}, #{email2}
+			, #{nonMember}, #{price}, #{usePoint}, #{instrument}
+			, #{zipcode}, #{parselAddress}, #{newAddress}, #{addressDetail}
+			, #{progress}, #{customerName}, #{message}, #{hp})
+	</insert>
+	
+	<insert id="insertPaymentDetail" parameterType="map">
+		insert into paymentDetail
+		values(#{payNo}, #{isbn}, #{bookName}, #{qty}, #{price})
+	</insert>
+	
+	<select id="selectPaymentByPayNo" parameterType="paymentVo" resultType="paymentVo">
+		select * from payment
+		<if test=" nonMember!=null and nonMember!=0">
+			where nonMember=#{nonMember}
+		</if>
+		<if test="nonMember==null or nonMember==0">
+			where payNo=#{payNo}
+		</if>
+	</select>
+	
+	<select id="selectPaymentDetail" parameterType="String" resultType="paymentDetailVo">
+		select * from paymentDetail
+		where payNo=#{payNo}
+	</select>
+	
+	<select id="selectPaymentList" parameterType="paymentDateVO" resultType="paymentVo">
+		select *
+		from
+		(
+			select rownum as "RNUM", A.* 
+			from
+			(
+				select * from payment
+				<if test="userid!=null and userid!=''">
+					where userid=#{userid}
+					<if test="startDay!=null and startDay!=''">
+						and payDate >= #{startDay}
+					</if> 
+					<![CDATA[
+						and payDate < to_date(#{endDay})+(interval '1' day)
+					]]>
+				</if>
+				<if test="(userid==null or userid=='') and payNo!=null and payNo!=''">
+					where nonMember=#{payNo}
+				</if>
+				
+				order by payDate desc
+			)A
+		)
+		<if test="userid!=null and userid!=''">
+			where "RNUM">#{firstRecordIndex} 
+			<![CDATA[
+			and "RNUM"<=#{firstRecordIndex}+#{recordCountPerPage}
+			]]>
+		</if>
+	</select>
+		
+	<select id="totalPaymentList" parameterType="paymentDateVO" resultType="int">
+		select count(*) from payment
+		<if test="userid!=null and userid!=''">
+			where userid=#{userid}
+			<if test="startDay!=null and startDay!=''">
+				and payDate > #{startDay}
+			</if> 
+			<![CDATA[
+				and payDate < to_date(#{endDay})+(interval '1' day)
+			]]>
+		</if>
+	</select>
+	
+	<update id="updateProgress" parameterType="paymentVo">
+		update payment
+		set PROGRESS=#{progress}
+		<if test="message!=null and message!=''">
+			, message = message || #{message}
+		</if>
+		<if test="progress=='환불 처리됨'">
+			, cancleDate = sysdate
+		</if>
+		where payNo=#{payNo}
+	</update>
+	
+	<select id="countPaymentByIsbn" parameterType="map" resultType="int">
+		select count(*)
+		from payment p
+		where exists(select payNo from paymentDetail d
+		    where isbn=#{isbn} and p.payNo=d.payNo)
+		and userid=#{userid} and progress='구매확정'
+	</select>
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+#a1,#a2,#a3,#a4{
+	color: white;
+	background-color: rgb(0 153 174);
+}
+#main{
+	font-size: 3em;
+	color: rgb(0 153 174);
+	font-family: fantasy;
+}
+#bt{
+	font-weight: bold;
+	font-size: 1.2em;
+}

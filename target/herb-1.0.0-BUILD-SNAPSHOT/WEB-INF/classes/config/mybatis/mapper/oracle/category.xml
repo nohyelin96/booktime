@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatis.mapper.category">
+	<select id="selectCategoryInfoByName"
+		parameterType="String" resultType="bookCategoryVo">
+		select * from bookCategory
+		where cateName = #{categoryName}
+	</select>
+	
+	<select id="selectAllCategory" resultType="bookCategoryVo">
+		select * from bookCategory
+		order by orderNo, cateCode
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+

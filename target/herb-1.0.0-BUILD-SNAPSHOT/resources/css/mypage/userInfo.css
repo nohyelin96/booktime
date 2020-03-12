@@ -1,0 +1,135 @@
+@charset "UTF-8";
+
+.info{
+	width: 800px;
+	border-top: 2px solid gray;
+}
+.info p{
+	font-weight: bold;
+}
+.info #all{
+	font-size: 30px;
+	margin-left: 20px;
+	margin-top: 20px;
+}
+#sub img{
+	width: 10px;
+	margin-bottom: 4px;
+}
+#editform{
+	margin-top: 40px;
+}
+#editform #userid{
+	border-top: 2px solid gray;
+}
+.pwdChk{
+	margin-top: 100px;
+}
+.pwdChk #editPWD1{
+	border-top: 2px solid gray;
+}
+form fieldset {
+	border-bottom: 1px solid gray;
+	padding: 20px;
+}
+.pwdChk button,#editform button  {
+	text-align: center;
+	margin-left: 300px;
+	margin-top: 30px;
+	border: none;
+	width: 200px;
+	height: 40px;
+	font-size: 0.8em;
+	background: rgb(0 153 174);
+	color: white;
+}
+#editform label{
+	width: 200px;
+	font-size: 14px;
+	font-weight: bolder;
+}
+
+#editform #address .btn{
+	background: gray;
+	margin: 0px;
+	width: 150px;
+}
+#editform img{
+	width: 10px;
+	margin-right: 3px;
+	margin-bottom: 5px;
+}
+#sub{
+	color: gray;
+	font-size: 0.8em;
+}
+#editform #userid label,#name label,#birth label, #gender label{
+	color: rgb(187 187 187);
+}
+#editform #userid input,#name input,#birth input, #gender input{
+	color: rgb(0 153 174);
+	border: none;
+}
+.pwdChk img{
+	width: 10px;
+	margin-right: 3px;
+	margin-bottom: 5px;
+}
+.pwdChk #p2{
+	font-size: 1.2em;
+	font-weight: bolder;
+	font-family: 맑은 고딕;
+}
+.pwdChk label{
+	width: 200px;
+	font-size: 14px;
+	font-weight: bolder; 
+}
+#editform #address #newaddress,#parseladdress{
+	width: 300px;
+	margin-left: 204px;
+	margin-top: 10px;
+}
+#editform #address #addressdetail{
+	width: 350px;
+	margin-left: 204px;
+	margin-top: 10px;
+}
+#editform #email2{
+	width: 150px;
+	height: 28px;
+}
+#editform #email1{
+	width: 150px;
+}
+.pwdChk #sub{
+	margin-top: 10px;
+}
+.pwdChk #causion strong{
+	font-size: 1.2em;
+	color: red;
+}
+#editform .pwdChk{
+	width: 800p
+}
+.frmpwd{
+	margin-left: 770px;
+	width: 800px;
+}
+.frmpwd .pwdChk{
+	width: 800px;
+}
+.edithp, .editaddress #zipcode{
+	margin-left: 204px;
+	margin-top: 10px;
+}
+#address span, #hp span, #email span{
+	color: rgb(0 153 174);
+	margin-right: 30px;
+}
+.editemail{
+	margin-left: 204px;
+}
+#editform .edithp #hp1,#hp2,#hp3{
+	width: 100px;
+}

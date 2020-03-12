@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatis.mapper.grade">
+	<select id="selectBookGrade" parameterType="String" resultType="bookGradeVo">
+		select * from bookGrade
+		where isbn=#{isbn}
+	</select>
+	
+	<select id="countBookGrade" resultType="int" parameterType="String">
+		select count(*) bookGrade
+		where isbn=#{isbn}
+	</select>
+	
+	<insert id="insertBookGrade">
+		<selectKey keyProperty="bookGradeNo" resultType="int" order="BEFORE">
+			select bookGrade_seq.nextval from dual
+		</selectKey>
+		
+		insert into bookGrade(bookGradeNo, userid, isbn, bookGrade)
+		values(#{bookGradeNo}, #{userid}, #{isbn}, #{bookGrade})
+	</insert>
+	
+	<update id="updateBookGrade">
+		update bookGrade
+		set bookGrade = #{bookGrade}
+		where userid=#{userid} and #{isbn}
+	</update>
+</mapper>
+
+
+
+
+
+
+
+
+

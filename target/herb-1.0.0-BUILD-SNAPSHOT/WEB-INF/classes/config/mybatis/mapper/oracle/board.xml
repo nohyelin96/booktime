@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatis.mapper.board">
+	
+	<insert id="writeFreeBoard" parameterType="freeBoardVo">
+		<selectKey keyProperty="boardNo" resultType="int" order="BEFORE">
+			select board_seq.nextval from dual
+		</selectKey>
+		insert into board(boardno,userid,category,title,content,name
+			<if test="filesize>0">,fileName,originalFilename,fileSize</if>)
+		values (#{boardNo},#{userid},#{category},#{title},#{content},#{name}
+			<if test="filesize>0">,#{filename},#{originalFilename},#{filesize}</if>)
+	</insert>
+	
+	<sql id="searchWhere">
+		<if test="searchKeyword!=null and searchKeyword != ''">
+			where ${searchCondition} like '%' || #{searchKeyword} || '%'
+			and deletedate is null
+		</if>
+	</sql>
+	
+	<select id="selectBoard" resultType="freeBoardVo">
+		select * from board
+		order by boardNo desc
+	</select>
+	
+	<select id="selectAllBoard" parameterType="searchVo" resultType="freeBoardVo">
+		select *
+		from
+		(
+		    select rownum as RNUM, A.*
+		    from
+		    (
+		        select boardNo,userid,category,
+		        title,content,regdate,
+		        deletedate,name from board
+		        <include refid="searchWhere"></include>
+				order by boardNo desc
+			)A
+		)
+		where RNUM > #{firstRecordIndex} 
+		<![CDATA[
+		and RNUM<= #{firstRecordIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+	
+	<select id="selectTotalRecord" parameterType="searchVo" 
+		resultType="int">
+		select count(*) from board
+		<include refid="searchWhere"></include>
+	</select>
+	
+	<select id="selectByNo" resultType="freeBoardVo">
+		select * from board
+		where boardNo=#{boardNo}
+	</select>
+	
+	<select id="selectById" resultType="freeBoardVo">
+		select * from "USER" where userid=#{userid}
+	</select>
+	
+	<update id="updateBoard" parameterType="freeBoardVo">
+		update board
+		set title=#{title}, content=#{content}
+		where boardNo=#{boardNo}
+	</update>
+	
+	<update id="drawBoard" parameterType="int">
+		update board
+		set deletedate=sysdate 
+		where boardNo=#{boardNo}
+	</update>
+
+	<select id="countReview" parameterType="map" resultType="int">
+		select count(*) from board
+		where userid=#{userid} and category=#{isbn}
+	</select>
+
+	<select id="selectBoardByCate" parameterType="String" resultType="freeBoardVo">
+		select * from board
+		where deletedate is null
+		and category=#{category}
+		order by boardNo desc
+	</select>
+	
+	<select id="selectReviews" parameterType="freeBoardVo" resultType="freeBoardVo">
+		select *
+		from
+		(
+		    select rownum as "RNUM", A.*
+		    from
+		    (
+		        select *
+		        from board
+		        where category = #{category}
+		        <if test="searchCondition==null or searchCondition=='' or searchCondition=='newer'">
+		        	order by boardNo desc
+		        </if>
+		        <if test="searchCondition=='older'">
+		        	order by boardNo 
+		        </if>
+		    )A
+		)
+		where "RNUM">#{firstRecordIndex} 
+		<![CDATA[and "RNUM"<=#{firstRecordIndex} + #{recordCountPerPage}]]>
+	</select>
+	
+	<select id="countReviews" parameterType="freeBoardVo" resultType="int">
+		select count(*)
+        from board
+        where category = #{category}
+	</select>
+</mapper>

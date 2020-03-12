@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatis.mapper.reply">
+	
+	<insert id="writeReply" parameterType="replyVo">
+		<selectKey keyProperty="replyNo" resultType="int" order="BEFORE">
+			select reply_seq.nextval from dual
+		</selectKey>
+		insert into reply (replyno,boardno,userid,replycontent,groupno,step)
+		<if test="step == '1' ">
+ 		values(#{replyNo},#{boardNo},#{userid},#{replyContent},#{replyNo},#{step})
+ 		</if>
+		<if test="step == '2' ">
+ 		values(#{replyNo},#{boardNo},#{userid},#{replyContent},#{groupNo},#{step})
+ 		</if>
+	</insert>
+	
+	<select id="selectReplyByNo" parameterType="int" resultType="replyVo">
+		select * from reply
+		where boardno=#{boardNo}
+		and replydeletedate is null
+		order by groupNo ,step
+	</select>
+	
+	<update id="drawReply" parameterType="int">
+		update reply
+		set replydeletedate=sysdate 
+		where replyNo=#{replyNo}
+	</update>
+	
+</mapper>

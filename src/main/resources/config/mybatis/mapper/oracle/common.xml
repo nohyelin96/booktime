@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatis.mapper.common">
+	<select id="countInfo" resultType="map">
+		select
+		(select count(*) from payment
+		    where progress='결제완료') "newPay"
+		,(select count(*) from payment
+			where progress='교환 신청중' 
+			or progress='환불 신청중') "refund"
+		,(select count(*) from board 
+		    where regdate>=to_char(sysdate, 'yyyy-mm-dd')
+		    and category='자유') "newBoard"
+	    ,(select count(*) from board 
+		    where category='이벤트'
+		    and deleteDate is null) "events"
+		,(select count(*) from "USER"
+			where WITHDRAWALDATE >= to_char(sysdate, 'yyyy-mm-dd')) "newOutUser"
+		,(select
+			(select sum(price) from payment
+    			where progress='구매확정')
+			+(select nvl(sum(usePoint),0) 
+			    from mileage where reason='기간만료')
+			-(select sum(usePoint)
+			    from mileage
+			    where reason!='기간만료')
+			from dual) "earning"
+		,(select sum(price) from payment
+    			where progress='구매확정') "payOk"
+    	,(select sum(usePoint) 
+			    from mileage where reason='기간만료') "noUseP"
+		,(select sum(usePoint)
+			    from mileage
+			    where reason!='기간만료') "usedP"	    		
+		,(select count(*) from recommendBook) "recommending"
+		,(select count(*) from "USER"
+				where gender='M' and grade!='A') "Male"
+		,(select count(*) from "USER"
+				where gender='F' and grade!='A') "Female"	
+		,(select count(*) from payment
+				where userid like('#%')) "nonMember"					
+		from dual
+	</select>
+</mapper>
